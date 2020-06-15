@@ -18,7 +18,11 @@ export async function run() {
       await execShellCommand('brew install tmate');
     } else {
       await execShellCommand('sudo apt-get update');
-      await execShellCommand('sudo apt-get install -y tmate openssh-client');
+      await execShellCommand('sudo apt-get install -y openssh-client');
+      await execShellCommand('wget https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-static-linux-amd64.tar.xz');
+      await execShellCommand('wget https://github.com/tmate-io/tmate/releases/download/2.4.0/tmate-2.4.0-static-linux-amd64.tar.xz');
+      await execShellCommand('tar xf tmate-2.4.0-static-linux-amd64.tar.xz');
+      await execShellCommand('sudo cp tmate-2.4.0-static-linux-amd64/tmate /usr/local/bin');
     }
     core.debug("Installed dependencies successfully");
 
@@ -29,7 +33,7 @@ export async function run() {
     core.debug("Generated SSH-Key successfully")
 
     core.debug("Creating new session")
-    await execShellCommand('tmate -S /tmp/tmate.sock new-session -d');
+    execShellCommand('tmate -F -S /tmp/tmate.sock new-session');
     await execShellCommand('tmate -S /tmp/tmate.sock wait tmate-ready');
     console.debug("Created new session successfully")
 
